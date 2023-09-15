@@ -6,7 +6,7 @@ export async function fetchTodos({ commit }) {
       url: "/todos",
     });
     commit("todos/setTodos", data, { root: true });
-  } catch (error) {
+  } catch (e) {
     commit("todos/setTodos", e.message, { root: true });
   } finally {
     console.log("The request to get all the todos has ended");
@@ -24,7 +24,7 @@ export async function addTodo({ commit }, todo) {
         done: false,
       },
     });
-  } catch (error) {
+  } catch (e) {
     commit("todos/setTodos", e.message, { root: true });
   } finally {
     console.log("The request to create a todo has ended");
@@ -42,14 +42,14 @@ export async function updateTodo({ commit }, todo) {
         done: todo.done,
       },
     });
-  } catch (error) {
+  } catch (e) {
     commit("todos/setTodos", e.message, { root: true });
   } finally {
     console.log("The request to update a todo has ended");
   }
 }
 
-export async function updateTodoStatus({ commit }, todo) {
+export async function updateTodoStatus({ commit, dispatch }, todo) {
   try {
     await Vue.axios({
       method: "PUT",
@@ -60,7 +60,8 @@ export async function updateTodoStatus({ commit }, todo) {
         done: !todo.done,
       },
     });
-  } catch (error) {
+    dispatch("fetchTodos");
+  } catch (e) {
     commit("todos/setTodos", e.message, { root: true });
   } finally {
     console.log("The request to update a todo's status has ended");
@@ -74,7 +75,7 @@ export async function removeTodo({ commit, dispatch }, id) {
       url: `/todos/${id}`,
     });
     dispatch("fetchTodos");
-  } catch (error) {
+  } catch (e) {
     commit("todos/setTodos", e.message, { root: true });
   } finally {
     console.log("The request to update a todo's status has ended");

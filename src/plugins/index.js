@@ -1,3 +1,3 @@
 require("./bootstrap-vue");
 require("./vuelidate");
-require("./vus-axios");
+require("./vue-axios");
